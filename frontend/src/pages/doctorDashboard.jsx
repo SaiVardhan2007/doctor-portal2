@@ -1,3 +1,3 @@
-export default function doctorDashboard() {
+export default function DoctorDashboard() {
   return <div>Doctor Dashboard</div>;
 }

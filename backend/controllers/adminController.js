@@ -16,16 +16,14 @@ export const addDoctor = async(req,res)=>{
                 message:"Email already exists"
             })
         }
-
-        const salt = await bcrypt.genSalt(10);
-        const hashedPassword = await bcrypt.hash(password,salt);
         const newUser = new Users({
             name,
             email,
-            password: hashedPassword,
+            password, 
             role: 'doctor'
         });
         await newUser.save();
+        
         const newDoctorProfile = new Doctor({
             userId: newUser._id,
             specialization,
@@ -45,7 +43,6 @@ export const addDoctor = async(req,res)=>{
         })
     }
 }
-
 export const getAllDoctors = async(req,res)=>{
     try{
         const doctors=await Doctor.find().populate('userId');

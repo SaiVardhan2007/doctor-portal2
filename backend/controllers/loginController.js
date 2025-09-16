@@ -7,14 +7,14 @@ export const loginUser = async (req,res)=>{
     try{
         const {email, password} = req.body;
         let success = false;
+        
         if (process.env.ADMIN_EMAIL === email && process.env.ADMIN_PASSWORD === password){
             const data = { user: { id: 1, role: 'admin' } };
-
             const token = jwt.sign(data, process.env.JWT_SECRET, {
               expiresIn: "72h",
             });
             success=true;
-            return res.json({success,token, message:'Admin login successful', role:'admin'})
+            return res.json({success, token, message:'Admin login successful', role:'admin'})
         }
 
         let user = await Users.findOne({email: req.body.email});
@@ -23,28 +23,27 @@ export const loginUser = async (req,res)=>{
             if (compare) {
                 const data = { user: { id: user.id, role: user.role } };
                 const token = jwt.sign(data, process.env.JWT_SECRET, {
-                          expiresIn: "72h",
-                        });
+                    expiresIn: "72h",
+                });
                 success=true;
-                return res.json({success,token})
-            }
-
-            else {
+                return res.json({
+                    success,
+                    token,
+                    role: user.role, 
+                    message: 'Login successful'
+                })
+            } else {
                 return res.status(401).json({
                     message:'Invalid password'
                 })
             }
-        }
-
-        else {
+        } else {
             return res.status(401).json({
                 message:'No such email found'
             })
         }
-    }
-    
-
-    catch(err) {
+    } catch(err) {
+        console.log('Login error:', err);
         res.status(500).json({
             message:"Internal Server Error"
         })

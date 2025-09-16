@@ -6,9 +6,9 @@ import Dashboard from './pages/Dashboard';
 import Home from './pages/Home';
 import ProtectedRoute from './components/ProtectedRoute';
 import AdminDashboard from './pages/AdminDashboard';
-import doctorDashboard from './pages/DoctorDashboard';
+import DoctorDashboard from './pages/DoctorDashboard';
 import Doctors from './pages/admin/Doctors';
-import AdminLayout from './components/adminLayout';
+import AdminLayout from './components/AdminLayout';
 
 import './App.css';
 
@@ -25,7 +25,7 @@ const App = () => {
             </ProtectedRoute>}/>
           <Route path="/doctor/dashboard" element={
             <ProtectedRoute>
-              <doctorDashboard />
+              <DoctorDashboard />
             </ProtectedRoute>} />
           <Route path="/admin/doctors" element={
             <ProtectedRoute>
