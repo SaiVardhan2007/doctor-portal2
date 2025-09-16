@@ -1,19 +1,42 @@
 import React from 'react';
-import { Routes, Route, Navigate } from 'react-router-dom';
+import { Routes, Route, Navigate, BrowserRouter } from 'react-router-dom';
 import Login from './pages/Login';
 import Register from './pages/Register';
 import Dashboard from './pages/Dashboard';
+import Home from './pages/Home';
+import ProtectedRoute from './components/ProtectedRoute';
+import AdminDashboard from './pages/AdminDashboard';
+import doctorDashboard from './pages/DoctorDashboard';
+import Doctors from './pages/admin/Doctors';
+import AdminLayout from './components/adminLayout';
+
 import './App.css';
 
 const App = () => {
   return (
     <div className="app-container">
-      <Routes>
-        <Route path="/" element={<Navigate to="/login" replace />} />
-        <Route path="/login" element={<Login />} />
-        <Route path="/register" element={<Register />} />
-        <Route path="/dashboard" element={<Dashboard />} />
-      </Routes>
+      <BrowserRouter>
+        <Routes>
+          <Route path="/" element={<Home/>} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/admin/dashboaard" element={
+            <ProtectedRoute>
+            <AdminDashboard />
+            </ProtectedRoute>}/>
+          <Route path="/doctor/dashboard" element={
+            <ProtectedRoute>
+              <doctorDashboard />
+            </ProtectedRoute>} />
+          <Route path="/admin/doctors" element={
+            <ProtectedRoute>
+              <AdminLayout>
+                <Doctors />
+              </AdminLayout>
+            </ProtectedRoute>} />
+          <Route path="/register" element={<Register />} />
+          <Route path="/dashboard" element={<Dashboard />} />
+        </Routes>
+      </BrowserRouter>
     </div>
   );
 };

@@ -7,11 +7,21 @@ export const loginUser = async (req,res)=>{
     try{
         const {email, password} = req.body;
         let success = false;
+        if (process.env.ADMIN_EMAIL === email && process.env.ADMIN_PASSWORD === password){
+            const data = { user: { id: 1, role: 'admin' } };
+
+            const token = jwt.sign(data, process.env.JWT_SECRET, {
+              expiresIn: "72h",
+            });
+            success=true;
+            return res.json({success,token, message:'Admin login successful', role:'admin'})
+        }
+
         let user = await Users.findOne({email: req.body.email});
         if (user){
             const compare = await bcrypt.compare(password, user.password)
             if (compare) {
-                const data = { user: { id: user.id } };
+                const data = { user: { id: user.id, role: user.role } };
                 const token = jwt.sign(data, process.env.JWT_SECRET, {
                           expiresIn: "72h",
                         });

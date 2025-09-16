@@ -29,7 +29,16 @@ export default function Login() {
       
       if (response.success) {
         localStorage.setItem('token', response.token);
-        navigate('/dashboard');
+        localStorage.setItem('role', response.data.data.role);
+        dispatch(setUser(response.data.data));
+        const userRole = response.data.data.role;
+        if (userRole === 'admin') {
+          navigate('/admin/dashboard');
+        } else if (userRole === 'doctor') {
+          navigate('/doctor/dashboard');
+        } else { 
+          navigate('/');
+        }
       }
     } catch (err) {
       setError(err.response?.data?.message || 'Login failed. Please try again.');

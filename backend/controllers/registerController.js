@@ -13,7 +13,6 @@ export const registerUser = async (req,res)=>{
             })
         }
         
-        // Create new user - password will be hashed by the pre-save middleware
         let newUser = new Users({ name, email, password });
         await newUser.save();
         
