@@ -61,8 +61,8 @@ export const getAllDoctors = async(req,res)=>{
 
 export const deleteDoctor = async(req,res)=>{
     try{
-        const {doctorId} = req.body;
-        const doctor_profile = await Doctor.findById({userId:doctorId})
+        const {id} = req.params; 
+        const doctor_profile = await Doctor.findById(id) 
         if (!doctor_profile){
             return res.status(404).json({
                 message: 'Doctor not found'
@@ -70,7 +70,7 @@ export const deleteDoctor = async(req,res)=>{
         }
         
         const user_profile = doctor_profile.userId;
-        await Doctor.findByIdAndDelete(doctorId);
+        await Doctor.findByIdAndDelete(id);
         await Users.findByIdAndDelete(user_profile);
         res.status(200).json({
             message: 'Doctor deleted successfully'

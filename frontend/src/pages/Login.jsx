@@ -29,15 +29,14 @@ export default function Login() {
       
       if (response.success) {
         localStorage.setItem('token', response.token);
-        localStorage.setItem('role', response.data.data.role);
-        dispatch(setUser(response.data.data));
-        const userRole = response.data.data.role;
-        if (userRole === 'admin') {
+        
+        // Handle role-based routing
+        if (response.role === 'admin') {
           navigate('/admin/dashboard');
-        } else if (userRole === 'doctor') {
+        } else if (response.role === 'doctor') {
           navigate('/doctor/dashboard');
-        } else { 
-          navigate('/');
+        } else {
+          navigate('/dashboard');
         }
       }
     } catch (err) {

@@ -1,10 +1,11 @@
 import express from "express";
 import { addDoctor, deleteDoctor, getAllDoctors } from "../controllers/adminController.js";
+import { isAdmin } from "../middleware/authMiddleware.js";
 
 const adminRouter = express.Router();
 
-adminRouter.route("/add-doctor", addDoctor)
-adminRouter.route("/get-all-doctors").get(getAllDoctors);
-adminRouter.route("/delete_doctor/:id").delete(deleteDoctor);
+adminRouter.post("/add-doctor", isAdmin, addDoctor);
+adminRouter.get("/get-all-doctors", isAdmin, getAllDoctors);
+adminRouter.delete("/delete-doctor/:id", isAdmin, deleteDoctor);
 
 export default adminRouter;
